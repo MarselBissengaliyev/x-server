@@ -1,0 +1,309 @@
+{
+  "version": "1.0.0",
+  "baseUrl": "http://localhost:3001/api",
+  "endpoints": {
+    "auth": {
+      "loginToX": {
+        "path": "/login-x",
+        "method": "POST",
+        "description": "Login to X account with credentials",
+        "request": {
+          "body": {
+            "login": "string",
+            "password": "string",
+            "proxy": "string (format: ip:port:login:password)",
+            "userAgent": "string"
+          }
+        },
+        "responses": {
+          "success": {
+            "status": 200,
+            "body": {
+              "status": "SUCCESS"
+            }
+          },
+          "2fa_required": {
+            "status": 200,
+            "body": {
+              "status": "2FA_REQUIRED"
+            }
+          },
+          "error": {
+            "status": 500,
+            "body": {
+              "error": "Login failed"
+            }
+          }
+        }
+      },
+      "submit2FA": {
+        "path": "/submit-2fa",
+        "method": "POST",
+        "description": "Submit 2FA code",
+        "request": {
+          "body": {
+            "code": "string"
+          }
+        },
+        "responses": {
+          "success": {
+            "status": 200,
+            "body": {
+              "status": "LOGGED_IN"
+            }
+          },
+          "error": {
+            "status": 400,
+            "body": {
+              "error": "Invalid 2FA code"
+            }
+          }
+        }
+      }
+    },
+    "accounts": {
+      "getAll": {
+        "path": "/accounts",
+        "method": "GET",
+        "description": "Get all accounts",
+        "responses": {
+          "success": {
+            "status": 200,
+            "body": [
+              {
+                "id": "string",
+                "login": "string",
+                "method": "string",
+                "posts": {
+                  "total": "number",
+                  "today": "number"
+                },
+                "settings": {
+                  "textPrompt": "string",
+                  "imagePrompt": "string",
+                  "hashtagPrompt": "string",
+                  "targetUrl": "string",
+                  "promotedOnly": "boolean",
+                  "schedule": "string",
+                  "autoposting": "boolean"
+                }
+              }
+            ]
+          },
+          "error": {
+            "status": 500,
+            "body": {
+              "error": "Failed to fetch accounts"
+            }
+          }
+        }
+      },
+      "addAccount": {
+        "path": "/accounts",
+        "method": "POST",
+        "description": "Add new account",
+        "request": {
+          "body": {
+            "login": "string",
+            "password": "string",
+            "proxy": "string",
+            "method": "string (Method1 or Method2)",
+            "userAgent": "string"
+          }
+        },
+        "responses": {
+          "success": {
+            "status": 200,
+            "body": {
+              "id": "string",
+              "login": "string",
+              "method": "string",
+              "createdAt": "string (ISO date)",
+              "posts": {
+                "total": 0,
+                "today": 0
+              }
+            }
+          },
+          "error": {
+            "status": 500,
+            "body": {
+              "error": "Failed to add account"
+            }
+          }
+        }
+      },
+      "getStats": {
+        "path": "/accounts/:accountId/stats",
+        "method": "GET",
+        "params": {
+          "accountId": "string"
+        },
+        "query": {
+          "days": "number (optional, default: 7)"
+        },
+        "responses": {
+          "success": {
+            "status": 200,
+            "body": [
+              {
+                "date": "string (YYYY-MM-DD)",
+                "posts": "number",
+                "engagement": "number",
+                "clicks": "number"
+              }
+            ]
+          },
+          "error": {
+            "status": 404,
+            "body": {
+              "error": "Account not found"
+            }
+          }
+        }
+      },
+      "updateSettings": {
+        "path": "/accounts/:accountId/settings",
+        "method": "PUT",
+        "params": {
+          "accountId": "string"
+        },
+        "request": {
+          "body": {
+            "textPrompt": "string",
+            "imagePrompt": "string",
+            "hashtagPrompt": "string",
+            "targetUrl": "string",
+            "promotedOnly": "boolean",
+            "schedule": "string",
+            "autoposting": "boolean"
+          }
+        },
+        "responses": {
+          "success": {
+            "status": 200,
+            "body": {
+              "id": "string",
+              "settings": "object (updated settings)"
+            }
+          },
+          "error": {
+            "status": 404,
+            "body": {
+              "error": "Account not found"
+            }
+          }
+        }
+      }
+    },
+    "posts": {
+      "createPost": {
+        "path": "/post-to-composer",
+        "method": "POST",
+        "description": "Create post in X Ads Composer",
+        "request": {
+          "body": {
+            "accountId": "string",
+            "textPrompt": "string",
+            "mediaType": "string (images or video)"
+          }
+        },
+        "responses": {
+          "success": {
+            "status": 200,
+            "body": {
+              "status": "POSTED"
+            }
+          },
+          "error": {
+            "status": 500,
+            "body": {
+              "error": "Ошибка публикации"
+            }
+          }
+        }
+      },
+      "schedulePost": {
+        "path": "/schedule-post",
+        "method": "POST",
+        "request": {
+          "body": {
+            "cronTime": "string (cron expression)",
+            "account": {
+              "accountId": "string",
+              "textPrompt": "string",
+              "mediaType": "string"
+            }
+          }
+        },
+        "responses": {
+          "success": {
+            "status": 200,
+            "body": {
+              "status": "Scheduled"
+            }
+          },
+          "error": {
+            "status": 500,
+            "body": {
+              "error": "Ошибка при планировании поста"
+            }
+          }
+        }
+      },
+      "getScheduledPosts": {
+        "path": "/scheduled-posts",
+        "method": "GET",
+        "responses": {
+          "success": {
+            "status": 200,
+            "body": {
+              "tasks": "number"
+            }
+          }
+        }
+      },
+      "deleteSchedule": {
+        "path": "/accounts/:accountId/schedule",
+        "method": "DELETE",
+        "params": {
+          "accountId": "string"
+        },
+        "responses": {
+          "success": {
+            "status": 200,
+            "body": {
+              "success": true
+            }
+          }
+        }
+      }
+    },
+    "content": {
+      "generate": {
+        "path": "/generate",
+        "method": "POST",
+        "request": {
+          "body": {
+            "type": "string (text, image, hashtags)",
+            "prompt": "string"
+          }
+        },
+        "responses": {
+          "success": {
+            "status": 200,
+            "body": {
+              "result": "string (generated content)"
+            }
+          },
+          "error": {
+            "status": 500,
+            "body": {
+              "error": "Failed to generate"
+            }
+          }
+        }
+      }
+    }
+  }
+}

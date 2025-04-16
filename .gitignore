@@ -1,0 +1,53 @@
+# Node.js
+node_modules/
+.env
+dist/
+build/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+package-lock.json
+yarn.lock
+.pnpm-debug.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+
+# Session/temporary files
+sessions/*
+!sessions/.gitkeep
+tmp/
+temp/
+.cache/
+.next/
+
+# TypeScript
+*.tsbuildinfo
+
+# Logs
+logs
+*.log
+logs/**/*.log
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Optional: sqlite if ты используешь его
+*.sqlite
+
+# Optional: Prisma
+prisma/migrations/
+
+# Optional: PM2
+pids/
+*.pid
+*.seed
+*.pid.lock

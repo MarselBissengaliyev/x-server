@@ -1,0 +1,32 @@
+[
+  {
+    "id": "1744645619532",
+    "screenName": "sriadimulam",
+    "accessToken": "3075555330-M5itQkTDZjsgs5uRH9HPrXTGLXbfpMEI1L73LkO",
+    "accessTokenSecret": "fyQHs9zNLjLuoTliY1xNZ6JLWn6uKRXU87KoWoh2xNJEN",
+    "createdAt": "2025-04-14T15:46:59.532Z",
+    "settings": {
+      "textPrompt": "",
+      "imagePrompt": "",
+      "hashtagPrompt": "",
+      "targetUrl": "",
+      "promotedOnly": false,
+      "schedule": "daily",
+      "autoposting": true,
+      "customTime": "09:00",
+      "postingDays": [
+        "Mon",
+        "Tue",
+        "Wed",
+        "Thu",
+        "Fri"
+      ],
+      "prompts": "about ai"
+    },
+    "posts": {
+      "total": 0,
+      "today": 0
+    },
+    "token": "mock-token"
+  }
+]
