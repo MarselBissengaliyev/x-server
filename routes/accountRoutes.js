@@ -10,11 +10,10 @@ router.delete('/:accountId',  async (req, res) => {
   try {
     console.log("hi")
     const { accountId } = req.params;
-    const parsedAccountId = parseInt(accountId); // Преобразуем в число
 
-    console.log('Trying to delete account with ID:', parsedAccountId);
+    console.log('Trying to delete account with ID:', accountId);
 
-    const account = await Account.findByPk(parsedAccountId);
+    const account = await Account.findByPk(accountId);
     if (!account) {
       return res.status(404).json({ error: 'Account not found' });
     }
