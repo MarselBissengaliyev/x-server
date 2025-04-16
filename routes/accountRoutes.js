@@ -5,7 +5,6 @@ import { getAccounts, addAccount, deleteAccount, updateSettings, getAccountSetti
 const router = express.Router();
 
 // Define routes
-router.get('/', getAccounts); // Fetch all accounts
 router.post('/', addAccount); // Add a new account
 router.delete('/:accountId', deleteAccount); // Delete an account by ID
 router.delete('/username/:username', deleteAccount); // Delete an account by username
