@@ -11,7 +11,7 @@ const PORT = process.env.PORT || 5000;
 
 // Middleware
 const corsOptions = {
-  origin: 'http://localhost:5173', // Allow requests from the frontend
+  origin: process.env.CLIENT_URL, // Allow requests from the frontend
   methods: ['GET', 'HEAD', 'PUT', 'PATCH', 'POST', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization'], // Allow required headers
   credentials: true // Allow credentials

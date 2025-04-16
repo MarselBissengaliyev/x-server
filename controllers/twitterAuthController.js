@@ -2,7 +2,7 @@ import OAuth from 'oauth-1.0a';
 import CryptoJS from 'crypto-js';
 import axios from 'axios';
 
-const CALLBACK_URL = 'http://localhost:3001/api/twitter/callback';
+const CALLBACK_URL = `${CLIENT_URL}/api/twitter/callback`;
 const REQUEST_TOKEN_URL = 'https://api.twitter.com/oauth/request_token';
 const ACCESS_TOKEN_URL = 'https://api.twitter.com/oauth/access_token';
 const AUTHORIZE_URL = 'https://api.twitter.com/oauth/authorize';
