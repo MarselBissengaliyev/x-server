@@ -6,8 +6,27 @@ const router = express.Router();
 
 // Define routes
 router.post('/', addAccount); // Add a new account
-router.delete('/:accountId', deleteAccount); // Delete an account by ID
-router.delete('/username/:username', deleteAccount); // Delete an account by username
+router.delete('/:accountId',  async (req, res) => {
+  try {
+    console.log("hi")
+    const { accountId } = req.params;
+    const parsedAccountId = parseInt(accountId); // Преобразуем в число
+
+    console.log('Trying to delete account with ID:', parsedAccountId);
+
+    const account = await Account.findByPk(parsedAccountId);
+    if (!account) {
+      return res.status(404).json({ error: 'Account not found' });
+    }
+
+    await account.destroy();
+    console.log('Account deleted:', parsedAccountId);
+    res.json({ message: 'Account deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    res.status(500).json({ error: 'Failed to delete account' });
+  }
+}); // Delete an account by ID
 router.put('/:accountId/settings', updateSettings);
 router.get('/:accountId/settings', getAccountSettings);
 
