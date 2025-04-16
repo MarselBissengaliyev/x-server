@@ -14,7 +14,9 @@ import { startScheduler } from './services/scheduleService.js'
 import contentRoutes from './routes/contentRoutes.js'
 import logger from './services/loggerService.js'
 
-dotenv.config()
+dotenv.config({
+  path: "./.env"
+})
 
 const app = express()
 const PORT = process.env.PORT || 3002
