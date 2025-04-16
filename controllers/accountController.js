@@ -39,24 +39,23 @@ export const addAccount = async (req, res) => {
 export const deleteAccount = async (req, res) => {
   try {
     const { accountId } = req.params;
-    console.log('Deleting account:', accountId);
+    const parsedAccountId = parseInt(accountId); // Преобразуем в число
 
-    // Преобразование accountId в число, если оно передается как строка
-    const accountIdNumber = Number(accountId);
+    console.log('Trying to delete account with ID:', parsedAccountId);
 
-    const account = await Account.findByPk(accountIdNumber);
+    const account = await Account.findByPk(parsedAccountId);
     if (!account) {
       return res.status(404).json({ error: 'Account not found' });
     }
 
     await account.destroy();
-    console.log('Account deleted:', accountId);
+    console.log('Account deleted:', parsedAccountId);
     res.json({ message: 'Account deleted successfully' });
   } catch (error) {
     console.error('Error deleting account:', error);
     res.status(500).json({ error: 'Failed to delete account' });
   }
-}
+};
 
 
 export const getAccountStats = async (req, res) => {
