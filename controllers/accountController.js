@@ -38,22 +38,18 @@ export const addAccount = async (req, res) => {
 
 export const deleteAccount = async (req, res) => {
   try {
-    const { accountId } = req.params
-    console.log('Deleting account:', accountId)
-
-    const account = await Account.findByPk(accountId)
-    if (!account) {
-      return res.status(404).json({ error: 'Account not found' })
+    const { accountId } = req.params;
+    const success = await Account.deleteAccount(accountId);
+    if (!success) {
+      return res.status(404).json({ error: 'Account not found' });
     }
-
-    await account.destroy()
-    console.log('Account deleted:', accountId)
-    res.json({ message: 'Account deleted successfully' })
+    res.json({ message: 'Account deleted successfully' });
   } catch (error) {
-    console.error('Error deleting account:', error)
-    res.status(500).json({ error: 'Failed to delete account' })
+    console.error('Error deleting account:', error);
+    res.status(500).json({ error: 'Failed to delete account' });
   }
-}
+};
+
 
 export const getAccountStats = async (req, res) => {
   const { accountId } = req.params
