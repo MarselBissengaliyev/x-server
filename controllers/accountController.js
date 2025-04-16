@@ -39,7 +39,7 @@ export const addAccount = async (req, res) => {
 export const deleteAccount = async (req, res) => {
   try {
     const { accountId } = req.params;
-    const success = await Account.deleteAccount(accountId);
+    const success = await Account.deleteAccount(+accountId);
     if (!success) {
       return res.status(404).json({ error: 'Account not found' });
     }
