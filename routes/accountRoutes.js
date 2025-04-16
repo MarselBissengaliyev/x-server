@@ -19,7 +19,7 @@ router.delete('/:accountId',  async (req, res) => {
     }
 
     await account.destroy();
-    console.log('Account deleted:', parsedAccountId);
+    console.log('Account deleted:', accountId);
     res.json({ message: 'Account deleted successfully' });
   } catch (error) {
     console.error('Error deleting account:', error);
