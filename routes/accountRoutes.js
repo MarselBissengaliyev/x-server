@@ -1,16 +1,65 @@
 import express from 'express';
 import { Account } from '../models/Account.js';
 import { getAccounts, addAccount, deleteAccount, updateSettings, getAccountSettings } from '../controllers/accountController.js';
+import { makePost } from '../services/scheduleService.js'; // Убедись, что этот метод доступен
 
 const router = express.Router();
 
 // Define routes
 router.get('/', getAccounts); // Fetch all accounts
 router.post('/', addAccount); // Add a new account
-router.delete('/:accountId', deleteAccount); // Delete an account by ID
-router.delete('/username/:username', deleteAccount); // Delete an account by username
-router.put('/:accountId/settings', updateSettings);
-router.get('/:accountId/settings', getAccountSettings);
+router.put('/:accountId/settings', updateSettings); // Update settings
+router.get('/:accountId/settings', getAccountSettings); // Get settings
+
+// Delete an account by ID or username
+router.delete('/:accountId', async (req, res) => {
+  try {
+    const { accountId } = req.params;
+    const account = await Account.findByPk(accountId);
+
+    if (!account) {
+      return res.status(404).json({ error: 'Account not found' });
+    }
+
+    await account.destroy();
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    res.status(500).json({ error: 'Failed to delete account' });
+  }
+});
+
+// Delete an account by username
+router.delete('/username/:username', async (req, res) => {
+  try {
+    const { username } = req.params;
+    const account = await Account.findOne({ where: { username } });
+
+    if (!account) {
+      return res.status(404).json({ error: 'Account not found' });
+    }
+
+    await account.destroy();
+    res.status(204).send();
+  } catch (error) {
+    console.error('Error deleting account:', error);
+    res.status(500).json({ error: 'Failed to delete account' });
+  }
+});
+
+// Get account by ID
+router.get('/:id', async (req, res) => {
+  try {
+    const account = await Account.findByPk(req.params.id);
+    if (!account) {
+      return res.status(404).json({ error: 'Account not found' });
+    }
+    res.json(account);
+  } catch (error) {
+    console.error('Error fetching account:', error);
+    res.status(500).json({ error: 'Failed to fetch account' });
+  }
+});
 
 // Make a post
 router.post('/:accountId/post', async (req, res) => {
@@ -45,31 +94,6 @@ router.post('/:accountId/post', async (req, res) => {
   }
 });
 
-// Get all accounts
-router.get('/', async (req, res) => {
-  try {
-    const accounts = await Account.findAll();
-    res.json(accounts);
-  } catch (error) {
-    console.error('Error fetching accounts:', error);
-    res.status(500).json({ error: 'Failed to fetch accounts' });
-  }
-});
-
-// Get account by ID
-router.get('/:id', async (req, res) => {
-  try {
-    const account = await Account.findByPk(req.params.id);
-    if (!account) {
-      return res.status(404).json({ error: 'Account not found' });
-    }
-    res.json(account);
-  } catch (error) {
-    console.error('Error fetching account:', error);
-    res.status(500).json({ error: 'Failed to fetch account' });
-  }
-});
-
 // Update account
 router.put('/:id', async (req, res) => {
   try {
@@ -77,6 +101,7 @@ router.put('/:id', async (req, res) => {
     if (!account) {
       return res.status(404).json({ error: 'Account not found' });
     }
+
     await account.update(req.body);
     res.json(account);
   } catch (error) {
@@ -84,26 +109,5 @@ router.put('/:id', async (req, res) => {
     res.status(500).json({ error: 'Failed to update account' });
   }
 });
-
-// Delete account
-router.delete('/:id', async (req, res) => {
-  try {
-    const deletedCount = await Account.destroy({
-      where: {
-        id: req.params.id
-      }
-    });
-
-    if (deletedCount === 0) {
-      return res.status(404).json({ error: 'Account not found' });
-    }
-
-    res.status(204).send(); // Успешно, без содержимого
-  } catch (error) {
-    console.error('Error deleting account:', error);
-    res.status(500).json({ error: 'Failed to delete account' });
-  }
-});
-
 
 export default router;
