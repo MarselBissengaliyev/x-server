@@ -41,6 +41,7 @@ export const deleteAccount = async (req, res) => {
     const { accountId } = req.params;
     const success = await Account.findByPk(accountId);
     if (!success) {
+      console.log("Account_id=", accountId)
       return res.status(404).json({ error: 'Account not found' });
     }
     res.json({ message: 'Account deleted successfully' });
