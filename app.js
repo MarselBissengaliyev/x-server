@@ -21,9 +21,6 @@ dotenv.config({
 const app = express()
 const PORT = process.env.PORT || 3002
 
-// Initialize storage
-await Account.initialize()
-
 // Session configuration
 const fileStore = FileStore(session)
 app.use(session({
